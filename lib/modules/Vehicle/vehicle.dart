@@ -207,6 +207,10 @@ class _VehicleState extends State<Vehicle> {
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
+                    leading: Image.asset(
+                      'assets/icons/truck_blue.png',
+                      scale: 7.0,
+                    ),
                     title: Text(
                       items[index].regNo,
                       style: const TextStyle(
