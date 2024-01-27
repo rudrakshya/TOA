@@ -139,6 +139,16 @@ class _VehicleState extends State<Vehicle> {
     }
   }
 
+  void navigateQR(regNo) {
+    Navigator.pushNamed(
+      context,
+      '/qr_generate',
+      arguments: {
+        'regNo': regNo,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,6 +242,7 @@ class _VehicleState extends State<Vehicle> {
                         ),
                       ],
                     ),
+                    onTap: () => navigateQR(items[index].regNo),
                   ),
                 ),
               );

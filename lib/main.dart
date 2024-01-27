@@ -7,6 +7,7 @@ import '../modules/Vehicle/vehicle.dart';
 import './modules/Dashboard/dashboard.dart';
 import './modules/scanner/scanner.dart';
 import './modules/Vehicle/create_vehicle.dart';
+import 'modules/qr_generate/qr_generate.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -71,6 +72,15 @@ class _MyAppState extends State<MyApp> {
               ownerName: args['ownerName'] as String,
               mobileNumber: args['mobileNumber'] as String,
               id: args['id'] as int,
+            ),
+            settings: settings,
+          );
+        }
+        if (settings.name == '/qr_generate') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return CupertinoPageRoute(
+            builder: (context) => QRGenerate(
+              regNo: args['regNo'] as String,
             ),
             settings: settings,
           );
