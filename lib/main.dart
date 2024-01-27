@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:toa/modules/profile/profile.dart';
 import '../modules/Vehicle/vehicle.dart';
 import './modules/Dashboard/dashboard.dart';
 import './modules/scanner/scanner.dart';
@@ -82,6 +83,13 @@ class _MyAppState extends State<MyApp> {
             builder: (context) => QRGenerate(
               regNo: args['regNo'] as String,
             ),
+            settings: settings,
+          );
+        }
+
+        if (settings.name == '/profile') {
+          return CupertinoPageRoute(
+            builder: (context) => const Profile(),
             settings: settings,
           );
         }

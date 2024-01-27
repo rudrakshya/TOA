@@ -29,6 +29,14 @@ class _DashboardState extends State<Dashboard> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
       ),
       body: const Column(
         children: [
