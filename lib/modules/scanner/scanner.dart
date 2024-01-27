@@ -22,7 +22,7 @@ class Scanner extends StatefulWidget {
 
 class _ScannerState extends State<Scanner> {
   final String header = "Federation of Malda";
-  final String subHeader = "Truck owner's association";
+  final String subHeader = "Truck owners' association";
   final TextEditingController _controller = TextEditingController();
   late String qrText = '';
   late bool isLogin = false;
