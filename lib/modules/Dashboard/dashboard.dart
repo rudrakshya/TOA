@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
             AutoSizeText(
               appBarHeader,
               minFontSize: 12,
-              maxFontSize: 18,
+              maxFontSize: 15,
             ),
           ],
         ),

@@ -116,9 +116,14 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: const Text("Profile"),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: logout,
+            Row(
+              children: [
+                const Text("Logout"),
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: logout,
+                ),
+              ],
             ),
           ],
         ),
