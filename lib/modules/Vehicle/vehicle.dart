@@ -36,7 +36,7 @@ class _VehicleState extends State<Vehicle> {
   }
 
   Future<void> _loadData({bool isRefresh = false}) async {
-    print('called');
+    // print('called');
     if (isRefresh) {
       page = 0;
       items.clear(); // Clear the list for refresh
@@ -135,7 +135,7 @@ class _VehicleState extends State<Vehicle> {
       }
     } else {
       // User cancelled the action
-      print("Action cancelled");
+      // print("Action cancelled");
     }
   }
 
