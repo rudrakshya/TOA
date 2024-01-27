@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:toa/api/vehicle_api.dart';
 
 import '../scanner/qr_scanner.dart';
 import '../../api/check_token_expiry.dart';
@@ -25,6 +26,13 @@ class _ScannerState extends State<Scanner> {
   final TextEditingController _controller = TextEditingController();
   late String qrText = '';
   late bool isLogin = false;
+
+  late bool initSearch = false;
+  late bool searching = false;
+  late bool found = false;
+
+  late String registeredOn = "";
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +96,96 @@ class _ScannerState extends State<Scanner> {
   void navigateToDashBoard() {
     Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.pushReplacementNamed(context, '/dashboard');
+  }
+
+  Future<bool> showAlertDialog(
+      BuildContext context, String title, String message) async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(title),
+              content: Text(message),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // Returning false if the dialog is dismissed by other means
+  }
+
+  void callAlert() {
+    showAlertDialog(context, "Empty", "Please enter the vehicle number!");
+  }
+
+  void _showAlert(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void search(text) async {
+    if (text.isEmpty) {
+      callAlert();
+      return;
+    }
+
+    setState(() {
+      qrText = text;
+      searching = true;
+      initSearch = true;
+    });
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    try {
+      var vehicleRes = await VehicleApi().getVechicleByRegNo(text);
+      // print(vehicleRes.isActive);
+      setState(() {
+        found = true;
+        registeredOn = vehicleRes.registrationDateFormatted;
+      });
+      // Clear the fiel
+    } catch (e) {
+      // Handle exception
+      if (e.toString().contains('Vehicle not registered')) {
+        // _showAlert(context, "", "Vehicle not registered");
+        setState(() {
+          found = false;
+        });
+      } else {
+        _showAlert(context, "", e.toString());
+      }
+    } finally {
+      // setState(() => isBtnLoading = false);
+    }
+
+    setState(() {
+      searching = false;
+    });
   }
 
   @override
@@ -215,8 +313,7 @@ class _ScannerState extends State<Scanner> {
                             ),
                           ),
                           onPressed: () {
-                            debugPrint(
-                                'Button pressed with text: ${_controller.text}');
+                            search(_controller.text);
                           },
                           child: const Text(
                             'Search',
@@ -236,9 +333,8 @@ class _ScannerState extends State<Scanner> {
                       ),
                     );
                     if (result != null) {
-                      setState(() {
-                        qrText = result; // Set the scanned QR text
-                      });
+                      // print(result);
+                      search(result);
                     }
                   },
                   child: Image.asset(
@@ -247,11 +343,65 @@ class _ScannerState extends State<Scanner> {
                     height: 100,
                   ),
                 ),
-                Text(qrText)
+                searching
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : found
+                        ? resultFound(context)
+                        : initSearch
+                            ? resultNotFound(context)
+                            : Container(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget resultFound(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/icons/check_green.png',
+            scale: 3.0,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            qrText,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text("Registered on $registeredOn"),
+          const Text("in association")
+        ],
+      ),
+    );
+  }
+
+  Widget resultNotFound(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/icons/error_sign.png',
+            scale: 3.0,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            qrText,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Text("Vehicle not registered"),
+          const Text("in association")
+        ],
       ),
     );
   }

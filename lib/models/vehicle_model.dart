@@ -2,13 +2,13 @@
 //
 //     final vehicleModel = vehicleModelFromJson(jsonString);
 
-import 'dart:convert';
+// import 'dart:convert';
 
-List<VehicleModel> vehicleModelFromJson(String str) => List<VehicleModel>.from(
-    json.decode(str).map((x) => VehicleModel.fromJson(x)));
+// List<VehicleModel> vehicleModelFromJson(String str) => List<VehicleModel>.from(
+//     json.decode(str).map((x) => VehicleModel.fromJson(x)));
 
-String vehicleModelToJson(List<VehicleModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+// String vehicleModelToJson(List<VehicleModel> data) =>
+//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class VehicleModel {
   String id;

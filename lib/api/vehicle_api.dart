@@ -122,6 +122,44 @@ class VehicleApi {
     }
   }
 
+  Future<VehicleModel> getVechicleByRegNo(String regNo) async {
+    var baseUrl = dotenv.env['BASE_URL'];
+    // print(token);
+    Map<String, dynamic> tokenObj = await CheckTokenExpiry().checkExpiry();
+    var token = tokenObj.values.first;
+
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
+    final uri = Uri.parse(
+      "$baseUrl/scanner/findByRegNo?reg_no=$regNo",
+    );
+    // print(uri);
+    final response = await http.get(
+      uri,
+      headers: headers,
+    );
+
+    // print(response.body);
+    if (response.statusCode == 200) {
+      // List jsonResponse = json.decode(response.body);
+      VehicleModel vehicleModelFromJson(String str) =>
+          VehicleModel.fromJson(json.decode(str));
+
+      // String vehicleModelToJson(VehicleModel data) =>
+      //     json.encode(data.toJson());
+      final vehicleModel = vehicleModelFromJson(response.body);
+      return vehicleModel;
+    } else if (response.statusCode == 404) {
+      throw Exception('Vehicle not registered');
+    } else {
+      throw Exception('Error');
+    }
+  }
+
   Future<bool> delete(String id) async {
     late String? baseUrl = dotenv.env['BASE_URL'];
     Map<String, dynamic> tokenObj = await CheckTokenExpiry().checkExpiry();
