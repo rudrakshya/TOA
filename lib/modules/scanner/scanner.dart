@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:toa/api/vehicle_api.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../api/vehicle_api.dart';
 import '../scanner/qr_scanner.dart';
 import '../../api/check_token_expiry.dart';
 import '../../services/token_storage.dart';
@@ -188,6 +190,13 @@ class _ScannerState extends State<Scanner> {
     });
   }
 
+  Future<void> _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse('https://toa.rudrakshyabarman.com/fomtoaPrivacy');
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -352,6 +361,33 @@ class _ScannerState extends State<Scanner> {
                         : initSearch
                             ? resultNotFound(context)
                             : Container(),
+                const Spacer(),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 2),
+                  alignment: Alignment.bottomCenter,
+                  child: RichText(
+                    text: TextSpan(children: [
+                      const TextSpan(
+                        text: "By using out app, you are agreed with our ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: "privacy policy, ",
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _launchPrivacyPolicy();
+                          },
+                      ),
+                      const TextSpan(
+                        text: "Read it out before using our app.",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ]),
+                  ),
+                ),
               ],
             ),
           ),
@@ -400,7 +436,7 @@ class _ScannerState extends State<Scanner> {
             ),
           ),
           const Text("Vehicle not registered"),
-          const Text("in association")
+          const Text("in association"),
         ],
       ),
     );
