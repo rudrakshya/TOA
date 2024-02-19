@@ -45,9 +45,11 @@ class _ScannerState extends State<Scanner> {
     var login = await checkLoggedIn();
     // print(login.toString());
     if (login == 200) {
-      setState(() {
-        isLogin = true;
-      });
+      if (mounted) {
+        setState(() {
+          isLogin = true;
+        });
+      }
     }
   }
 
@@ -200,12 +202,12 @@ class _ScannerState extends State<Scanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          // Call this method here to hide keyboard and unfocus text field
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () {
+            // Call this method here to hide keyboard and unfocus text field
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -217,7 +219,7 @@ class _ScannerState extends State<Scanner> {
               ),
             ),
             padding: EdgeInsets.fromLTRB(
-                7, MediaQuery.of(context).size.height * 0.05, 7, 0),
+                7, MediaQuery.of(context).size.height * 0.05, 7, 10),
             child: Column(
               children: [
                 InkWell(
@@ -363,29 +365,31 @@ class _ScannerState extends State<Scanner> {
                             : Container(),
                 const Spacer(),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  // height: MediaQuery.of(context).size.height * 0.2,
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 2),
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 10),
                   alignment: Alignment.bottomCenter,
                   child: RichText(
-                    text: TextSpan(children: [
-                      const TextSpan(
-                        text: "By using out app, you are agreed with our ",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: "privacy policy, ",
-                        style: const TextStyle(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            _launchPrivacyPolicy();
-                          },
-                      ),
-                      const TextSpan(
-                        text: "Read it out before using our app.",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ]),
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "By using out app, you are agreed with our ",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        TextSpan(
+                          text: "privacy policy, ",
+                          style: const TextStyle(color: Colors.blue),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _launchPrivacyPolicy();
+                            },
+                        ),
+                        const TextSpan(
+                          text: "Read it out before using our app.",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -398,7 +402,7 @@ class _ScannerState extends State<Scanner> {
 
   Widget resultFound(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(15),
       child: Column(
         children: [
           Image.asset(
@@ -421,7 +425,7 @@ class _ScannerState extends State<Scanner> {
 
   Widget resultNotFound(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(15),
       child: Column(
         children: [
           Image.asset(
