@@ -33,7 +33,7 @@ class _QRGenerateState extends State<QRGenerate> {
       await Share.shareXFiles(
         [XFile('${tempDir.path}/image.png')],
         text:
-            'Here is your QR code of our association for your vechile no. ${widget.regNo}',
+            'Here is your QR code of our association for your vehicle no. ${widget.regNo}',
       );
     } catch (e) {
       // print(e.toString());
@@ -46,16 +46,20 @@ class _QRGenerateState extends State<QRGenerate> {
       appBar: AppBar(
         title: Text('QR Code of ${widget.regNo}'),
       ),
-      body: Center(
-        child: RepaintBoundary(
-          key: globalKey,
-          child: QrImageView(
-            data: widget.regNo,
-            version: QrVersions.auto,
-            size: 320.0,
-            embeddedImage: const AssetImage('assets/images/logo.png'),
-            embeddedImageStyle: const QrEmbeddedImageStyle(
-              size: Size(80, 80),
+      body: Container(
+        color: Colors.white,
+        child: Center(
+          child: RepaintBoundary(
+            key: globalKey,
+            child: QrImageView(
+              backgroundColor: Colors.white,
+              data: widget.regNo,
+              version: QrVersions.auto,
+              size: 320.0,
+              embeddedImage: const AssetImage('assets/images/logo.png'),
+              embeddedImageStyle: const QrEmbeddedImageStyle(
+                size: Size(50, 50),
+              ),
             ),
           ),
         ),
