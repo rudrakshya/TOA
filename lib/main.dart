@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:toa/modules/profile/profile.dart';
+import './modules/profile/profile.dart';
 import '../modules/Vehicle/vehicle.dart';
 import './modules/Dashboard/dashboard.dart';
 import './modules/scanner/scanner.dart';
 import './modules/Vehicle/create_vehicle.dart';
-import 'modules/qr_generate/qr_generate.dart';
+import './modules/qr_generate/qr_generate.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
