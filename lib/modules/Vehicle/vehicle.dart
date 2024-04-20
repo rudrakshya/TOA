@@ -55,7 +55,9 @@ class _VehicleState extends State<Vehicle> {
   Future<void> _loadData({bool isRefresh = false}) async {
     // print('called');
     if (isRefresh) {
-      page = 0;
+      setState(() {
+        page = 0;
+      });
       items.clear(); // Clear the list for refresh
     }
 
@@ -71,9 +73,9 @@ class _VehicleState extends State<Vehicle> {
       setState(() {
         items.addAll(newData);
         isLoading = false;
-        if (!isRefresh) {
-          page++;
-        }
+        // if (!isRefresh) {
+        page++;
+        // }
       });
     }
   }
