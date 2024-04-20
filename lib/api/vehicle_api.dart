@@ -104,8 +104,41 @@ class VehicleApi {
       "Authorization": "Bearer $token",
     };
 
+    // print(page);
     final uri = Uri.parse(
       "$baseUrl/vehicle/findAll?page=$page",
+    );
+    // print(uri);
+    final response = await http.get(
+      uri,
+      headers: headers,
+    );
+
+    // print(response.body);
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((e) => VehicleModel.fromJson(e)).toList();
+    } else {
+      throw Exception('Error');
+    }
+  }
+
+  Future<List<VehicleModel>> searchVechicle(
+    String searchText,
+  ) async {
+    var baseUrl = dotenv.env['BASE_URL'];
+    // print(token);
+    Map<String, dynamic> tokenObj = await CheckTokenExpiry().checkExpiry();
+    var token = tokenObj.values.first;
+
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
+    final uri = Uri.parse(
+      "$baseUrl/vehicle/search?term=$searchText",
     );
     // print(uri);
     final response = await http.get(
