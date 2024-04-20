@@ -17,7 +17,7 @@ class _VehicleState extends State<Vehicle> {
   bool isLoading = false;
   int page = 0;
   final TextEditingController _searchController = TextEditingController();
-  List<VehicleModel> filteredItems = [];
+  late bool isSearchLoading = false;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -27,12 +27,12 @@ class _VehicleState extends State<Vehicle> {
     _scrollController.addListener(_scrollListener);
     // print('called');
     _loadData();
-    // _searchController.addListener(_onSearchChanged);
-    // _scrollController.addListener(_scrollListener);
-    // _loadData();
   }
 
   void _onSearchChanged() async {
+    setState(() {
+      isSearchLoading = true;
+    });
     if (_searchController.text.isEmpty) {
       _loadData();
     } else {
@@ -40,6 +40,7 @@ class _VehicleState extends State<Vehicle> {
           await VehicleApi().searchVechicle(_searchController.text);
       setState(() {
         items = searchData;
+        isSearchLoading = false;
       });
     }
   }
@@ -48,13 +49,16 @@ class _VehicleState extends State<Vehicle> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      _loadData();
+      if (_searchController.text.isEmpty) {
+        _loadData();
+      }
     }
   }
 
   Future<void> _loadData({bool isRefresh = false}) async {
     // print('called');
     if (isRefresh) {
+      _searchController.text = "";
       setState(() {
         page = 0;
       });
@@ -158,9 +162,6 @@ class _VehicleState extends State<Vehicle> {
         // Handle the error case
         // You might want to show a Snackbar or a dialog indicating failure
       }
-    } else {
-      // User cancelled the action
-      // print("Action cancelled");
     }
   }
 
@@ -229,9 +230,23 @@ class _VehicleState extends State<Vehicle> {
                 const SizedBox(width: 5),
                 ElevatedButton.icon(
                   onPressed: () {
-                    _onSearchChanged(); // Trigger search
+                    isSearchLoading
+                        ? null
+                        : _onSearchChanged(); // Trigger search
                   },
-                  icon: const Icon(Icons.search), // Icon at the left
+                  icon: isSearchLoading
+                      ? Container(
+                          width:
+                              24, // Match the typical Icon size for alignment
+                          height: 24,
+                          padding: const EdgeInsets.all(
+                              2), // Padding to reduce icon size visually
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: Colors.white, // Spinner color
+                          ),
+                        )
+                      : const Icon(Icons.search),
                   label: const Text(''), // Empty text as the label
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -335,18 +350,6 @@ class _VehicleState extends State<Vehicle> {
                                   color: Colors.grey[800],
                                 ),
                               ),
-                              // Padding(
-                              //   padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              //   child: Text(
-                              //     "Created on ${items[index].registrationDateFormatted}",
-                              //     overflow: TextOverflow.ellipsis,
-                              //     maxLines: 1, //
-                              //     style: TextStyle(
-                              //       fontSize: 10,
-                              //       color: Colors.grey[700],
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                           trailing:
