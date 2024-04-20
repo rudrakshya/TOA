@@ -199,7 +199,7 @@ class _VehicleState extends State<Vehicle> {
                   child: TextField(
                     controller: _searchController,
                     decoration: const InputDecoration(
-                      labelText: 'Search',
+                      labelText: 'Search Reg. no, owner name, mobile',
                       contentPadding: EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 12.0,
