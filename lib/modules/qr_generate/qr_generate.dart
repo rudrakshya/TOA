@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 
@@ -30,6 +31,20 @@ class _QRGenerateState extends State<QRGenerate> {
       final file = await File('${tempDir.path}/image.png').create();
       await file.writeAsBytes(pngBytes);
 
+      // Workaround: Copy text to clipboard since WhatsApp often ignores the caption
+      await Clipboard.setData(ClipboardData(
+          text:
+              'Here is your QR code of our association for your vehicle no. ${widget.regNo}'));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Caption copied to clipboard! Paste it in WhatsApp.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+
+      // ignore: deprecated_member_use
       await Share.shareXFiles(
         [XFile('${tempDir.path}/image.png')],
         text:
