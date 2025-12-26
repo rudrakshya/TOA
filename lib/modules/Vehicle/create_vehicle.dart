@@ -269,6 +269,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
                             text: formatDate(selectedDate)),
                         onTap: () => _selectDate(context),
                       ),
+                      const SizedBox(height: 10),
                       TextField(
                         enableSuggestions: false,
                         autocorrect: false,
