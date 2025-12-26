@@ -15,6 +15,7 @@ class VehicleApi {
     String ownerName,
     String mobile,
     DateTime regDatetime,
+    String location,
   ) async {
     late String? baseUrl = dotenv.env['BASE_URL'];
     Map<String, dynamic> tokenObj = await CheckTokenExpiry().checkExpiry();
@@ -35,6 +36,7 @@ class VehicleApi {
         "owner_name": ownerName,
         "mobile_number": mobile,
         "registration_date": formattedDate,
+        "location": location,
       }),
     );
 
@@ -55,6 +57,7 @@ class VehicleApi {
     String mobile,
     DateTime regDatetime,
     int id,
+    String location,
   ) async {
     late String? baseUrl = dotenv.env['BASE_URL'];
     Map<String, dynamic> tokenObj = await CheckTokenExpiry().checkExpiry();
@@ -76,6 +79,7 @@ class VehicleApi {
         "mobile_number": mobile,
         "registration_date": formattedDate,
         "id": id,
+        "location": location,
       }),
     );
 

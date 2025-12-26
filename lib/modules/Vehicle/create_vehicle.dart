@@ -26,6 +26,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
   final TextEditingController _vehicleRegNo = TextEditingController();
   final TextEditingController _ownerFullName = TextEditingController();
   final TextEditingController _mobileNumber = TextEditingController();
+  final TextEditingController _location = TextEditingController();
   late DateTime selectedDate = DateTime.now();
   late bool _validateVehicle = true;
   late bool _validateOwner = true;
@@ -106,6 +107,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
           _ownerFullName.text,
           _mobileNumber.text,
           selectedDate,
+          _location.text,
         );
 
         if (res.status == 200) {
@@ -113,6 +115,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
           _vehicleRegNo.clear();
           _ownerFullName.clear();
           _mobileNumber.clear();
+          _location.clear();
           // You can also reset the selectedDate if needed
 
           // Show success alert
@@ -141,6 +144,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
           _mobileNumber.text,
           selectedDate,
           id,
+          _location.text,
         );
 
         if (res.status == 200) {
@@ -148,6 +152,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
           _vehicleRegNo.clear();
           _ownerFullName.clear();
           _mobileNumber.clear();
+          _location.clear();
           setState(() {
             id = 0;
           });
@@ -263,6 +268,17 @@ class _CreateVehicleState extends State<CreateVehicle> {
                         controller: TextEditingController(
                             text: formatDate(selectedDate)),
                         onTap: () => _selectDate(context),
+                      ),
+                      TextField(
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          labelText: "Location (Optional)",
+                          hintText: "Enter location",
+                        ),
+                        controller: _location,
+                        textCapitalization: TextCapitalization.sentences,
                       ),
                     ],
                   ),
