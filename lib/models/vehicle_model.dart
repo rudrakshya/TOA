@@ -17,6 +17,7 @@ class VehicleModel {
   String mobileNumber;
   DateTime registrationDate;
   String registrationDateFormatted;
+  String location;
   String isActive;
 
   VehicleModel({
@@ -26,6 +27,7 @@ class VehicleModel {
     required this.mobileNumber,
     required this.registrationDate,
     required this.registrationDateFormatted,
+    required this.location,
     required this.isActive,
   });
 
@@ -36,6 +38,7 @@ class VehicleModel {
         mobileNumber: json["mobile_number"],
         registrationDate: DateTime.parse(json["registration_date"]),
         registrationDateFormatted: json["registration_date_formatted"],
+        location: json["location"],
         isActive: json["is_active"],
       );
 
@@ -46,6 +49,7 @@ class VehicleModel {
         "mobile_number": mobileNumber,
         "registration_date": registrationDate.toIso8601String(),
         "registration_date_formatted": registrationDateFormatted,
+        "location": location,
         "is_active": isActive,
       };
 }

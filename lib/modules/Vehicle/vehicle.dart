@@ -96,6 +96,7 @@ class _VehicleState extends State<Vehicle> {
     String ownerName,
     String mobileNumber,
     int id,
+    String location,
   ) {
     Navigator.pushNamed(
       context,
@@ -105,6 +106,7 @@ class _VehicleState extends State<Vehicle> {
         'ownerName': ownerName,
         'mobileNumber': mobileNumber,
         'id': id,
+        'location': location,
       },
     );
   }
@@ -287,6 +289,7 @@ class _VehicleState extends State<Vehicle> {
                               items[index].ownerName,
                               items[index].mobileNumber,
                               int.parse(items[index].id.toString()),
+                              items[index].location,
                             ),
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,

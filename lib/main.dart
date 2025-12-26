@@ -73,6 +73,7 @@ class _MyAppState extends State<MyApp> {
               ownerName: args['ownerName'] as String,
               mobileNumber: args['mobileNumber'] as String,
               id: args['id'] as int,
+              location: args['location'] as String,
             ),
             settings: settings,
           );

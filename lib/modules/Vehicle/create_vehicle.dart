@@ -8,6 +8,7 @@ class CreateVehicle extends StatefulWidget {
   final String ownerName;
   final String mobileNumber;
   final int id;
+  final String location;
 
   const CreateVehicle({
     super.key,
@@ -15,6 +16,7 @@ class CreateVehicle extends StatefulWidget {
     required this.ownerName,
     required this.mobileNumber,
     required this.id,
+    required this.location,
   });
 
   @override
@@ -41,6 +43,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
     _mobileNumber.text = widget.mobileNumber;
     // print("id:  ${widget.id}");
     id = widget.id;
+    _location.text = widget.location;
     super.initState();
   }
 
