@@ -72,18 +72,11 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
-
-        // Add support for flexible page sizes (16 KB)
-        // This ensures native libraries are compiled with 16 KB alignment
-        externalNativeBuild {
-            cmake {
-                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
-            }
-        }
     }
 
     // Configure native library alignment for 16 KB page size
     // This ensures native libraries are aligned to 16 KB boundaries for devices with 16 KB page size
+    // Setting useLegacyPackaging to false enables proper page-aligned packaging
     packaging {
         jniLibs {
             useLegacyPackaging = false
