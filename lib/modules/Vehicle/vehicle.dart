@@ -404,6 +404,7 @@ class _VehicleState extends State<Vehicle> {
               'ownerName': '',
               'mobileNumber': '',
               'id': 0,
+              'location': '',
             },
           );
         }, // Icon inside FAB
